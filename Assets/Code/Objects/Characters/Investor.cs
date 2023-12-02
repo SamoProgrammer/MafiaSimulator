@@ -8,26 +8,26 @@ using UnityEngine;
 
 public class Investor : Character
 {
-    float time;
+    private float time;
 
 
-    private void Update()
+    protected override void Update()
     {
-        time += Time.deltaTime;
+        base.Update();
+        // simple timer mechanism
         Invest();
     }
 
 
-
+    // adding 5 percent to character money in every 5 seconds
     private void Invest()
     {
-
-        if (time < 5.1 && time > 4.9)
+        time += Time.deltaTime;
+        if ((int)time == 5)
         {
-
-            time = 0;
             this.money += this.money * 5 / 100;
             Debug.Log(this.money);
+            time = 0;
         }
     }
 
