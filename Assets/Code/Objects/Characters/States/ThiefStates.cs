@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 enum ThiefStates
 {
-    Idle,
+    
     GoingToStealMoney,
     StealingMoney,
     BeingCapturedByPolice,

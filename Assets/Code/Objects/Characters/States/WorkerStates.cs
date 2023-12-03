@@ -1,8 +1,8 @@
 
-    public enum WorkerStates
-    {
-        Idle,
-        GoingToHouseForWork,
-        Working,
-        Dead
-    }
+public enum WorkerStates
+{
+
+    GoingToHouseForWork,
+    Working,
+    
+}
