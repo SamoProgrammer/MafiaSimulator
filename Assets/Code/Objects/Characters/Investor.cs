@@ -9,6 +9,7 @@ using UnityEngine;
 public class Investor : Character
 {
     private float time;
+    public InvestorStates investorStates = InvestorStates.Investing;
 
 
     protected override void Update()
@@ -22,12 +23,15 @@ public class Investor : Character
     // adding 5 percent to character money in every 5 seconds
     private void Invest()
     {
-        time += Time.deltaTime;
-        if ((int)time == 5)
+        if (health == 100)
         {
-            this.money += this.money * 5 / 100;
-            Debug.Log(this.money);
-            time = 0;
+            time += Time.deltaTime;
+            if ((int)time == 5)
+            {
+                this.money += this.money * 5 / 100;
+                Debug.Log(this.money);
+                time = 0;
+            }
         }
     }
 
