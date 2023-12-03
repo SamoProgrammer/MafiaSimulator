@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-
+namespace MafiaSimulator.Code.Objects
+{
+    
+}
 public class Character : MonoBehaviour
 {
     public int health = 100;
@@ -11,7 +14,7 @@ public class Character : MonoBehaviour
     private NavMeshAgent characterAgent;
     public Vector3 characterDestination;
 
-    private void Start()
+    protected virtual void Start()
     {
         characterAgent = GetComponent<NavMeshAgent>();
     }
