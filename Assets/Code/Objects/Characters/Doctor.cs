@@ -6,8 +6,27 @@ using System.Threading.Tasks;
 
 public class Doctor : Character
 {
-    public void HealCharacter(Character character)
+    public List<Character> charactersToHeal = new List<Character>();
+
+    protected override void Update()
     {
-        character.health = 100;
+        base.Update();
+        HealCharacter();
+
+    }
+
+    public void HealCharacter()
+    {
+        if (charactersToHeal.Count != 0)
+        {
+            Character characterToHeal = charactersToHeal.First();
+            characterDestination = characterToHeal.transform.position;
+
+            if (transform.position == characterToHeal.transform.position)
+            {
+                characterToHeal.health = 100;
+            }
+            charactersToHeal.Remove(characterToHeal);
+        }
     }
 }
