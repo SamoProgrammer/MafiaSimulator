@@ -9,13 +9,12 @@ using UnityEngine.AI;
 
 public class Thief : Character
 {
-
     [SerializeField] int stealAmount = 2;
     [SerializeField] GameObject workplaces;
     public ThiefStates thiefState = ThiefStates.GoingToStealMoney;
     public GameObject prisonOutput;
     public GameObject prison;
-    [SerializeField] float jailTime = 30;
+    [SerializeField] int jailTime = 30;
     Building[] availableBuildings;
     NavMeshAgent myAgent;
     float pickTimer = 0;
@@ -25,6 +24,7 @@ public class Thief : Character
 
     protected override void Start()
     {
+
         myAgent = GetComponent<NavMeshAgent>();
         availableBuildings = GetChildObjects(workplaces);
         PickTarget();
@@ -64,7 +64,8 @@ public class Thief : Character
         {
             myAgent.SetDestination(prison.transform.position);
             jailTimer += Time.deltaTime;
-            if (jailTimer == jailTime)
+            transform.position = prison.transform.position;
+            if ((int)jailTimer == jailTime)
             {
                 transform.position = prisonOutput.transform.position;
                 thiefState = ThiefStates.GoingToStealMoney;

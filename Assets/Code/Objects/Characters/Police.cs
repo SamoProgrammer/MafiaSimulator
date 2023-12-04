@@ -7,11 +7,14 @@ using UnityEngine.AI;
 
 public class Police : Character
 {
+    UIScript ui;
     public PoliceStates policeState = PoliceStates.Patroling;
     NavMeshAgent myAgent;
+    [SerializeField] int bribeCoolDown;
     [SerializeField] GameObject patrolWaypointsParent;
     [SerializeField] GameObject prisonInput;
     [SerializeField] GameObject prison;
+    float bribeTimer = 0;
     public int bribeAmount = 50;
     GameObject suspect;
     Thief thiefScript;
@@ -22,6 +25,7 @@ public class Police : Character
 
     protected override void Start()
     {
+
         myAgent = GetComponent<NavMeshAgent>();
         patrolWaypoints = GetChildObjects(patrolWaypointsParent);
 
@@ -30,6 +34,7 @@ public class Police : Character
 
     protected override void Update()
     {
+        bribeTimer += Time.deltaTime;
         if (policeState == PoliceStates.Patroling)
         {
             Patrol();
@@ -52,8 +57,24 @@ public class Police : Character
             thiefScript = other.GetComponent<Thief>();
             if (thiefScript.tag == "Bribe" && thiefScript.money > bribeAmount)
             {
-                money += bribeAmount;
-                thiefScript.money -= bribeAmount;
+                if (bribeTimer > bribeCoolDown)
+                {
+                    money += bribeAmount;
+                    thiefScript.money -= bribeAmount;
+                    bribeTimer = 0;
+                }
+                else
+                {
+                    if (thiefScript.thiefState == ThiefStates.StealingMoney || thiefScript.thiefState == ThiefStates.GoingToStealMoney)
+                    {
+                        if (policeState == PoliceStates.Patroling)
+                        {
+                            policeState = PoliceStates.Chasing;
+                            suspect = other.GameObject();
+                        }
+                    }
+                }
+
             }
             else
             {
@@ -89,7 +110,7 @@ public class Police : Character
         myAgent.SetDestination(prisonInput.transform.position);
         if (Vector3.Distance(transform.position, prisonInput.transform.position) < 1f)
         {
-            suspect.transform.position = prison.transform.position;
+
             thiefScript.thiefState = ThiefStates.InPrison;
             policeState = PoliceStates.Patroling;
         }

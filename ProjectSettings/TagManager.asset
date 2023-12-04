@@ -3,12 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - WorkPlace
+  - PatrolWaypoint
+  - Thief
+  - Bribe
+  - Police
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - ignore
   - Water
   - UI
   - 
