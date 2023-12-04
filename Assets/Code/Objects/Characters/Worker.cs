@@ -40,8 +40,10 @@ public class Worker : Character
             else if (workerState == WorkerStates.GoingToHouseForWork)
             {
                 houseToWork = housesToWork[Random.Range(0, housesToWork.Count)];
-                characterDestination = houseToWork.transform.position;
-                if (transform.position == houseToWork.transform.position)
+                Vector3 housePositionToWork = houseToWork.transform.position - new Vector3(-0.5f, 0, -0.5f);
+                characterDestination = housePositionToWork;
+                movementEnabled = true;
+                if (Vector3.Distance(transform.position, housePositionToWork) < 1.5f)
                 {
                     workerState = WorkerStates.Working;
                 }

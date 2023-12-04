@@ -12,8 +12,9 @@ class Assassin : Character
     List<GameObject> charactersOnSight = new List<GameObject>();
     NavMeshAgent myNavmeshAgent;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         myNavmeshAgent = GetComponent<NavMeshAgent>();
     }
 

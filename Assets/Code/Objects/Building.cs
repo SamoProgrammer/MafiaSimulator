@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 
-<<<<<<< HEAD
-public class Building:MonoBehaviour
-=======
 public class Building : MonoBehaviour
 {
     public int money;
@@ -15,7 +12,6 @@ public class Building : MonoBehaviour
 
 
     private void Start()
->>>>>>> fc32d43dfe05024726d41e696d07f780e5546a90
     {
         buildingPosition = transform.position;
     }

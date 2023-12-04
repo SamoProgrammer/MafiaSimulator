@@ -2,16 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-<<<<<<< HEAD
-using UnityEngine;
-
-
-public class Thief : Character
-{
-    private float time;
-    private bool stealCooldown = false;
-    public Character characterToStealMoney;
-=======
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -25,53 +15,17 @@ public class Thief : Character
     float stealTimer = 0;
     Building targetBuilding;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         availableBuildings = workplaces.GetComponentsInChildren<Building>();
         PickTarget();
 
     }
->>>>>>> fc32d43dfe05024726d41e696d07f780e5546a90
 
     protected override void Update()
     {
         base.Update();
-<<<<<<< HEAD
-        // simple timer mechanism
-        StealMoney();
-        StealCooldown();
-
-
-    }
-
-
-    public void StealMoney()
-    {
-        if (!stealCooldown)
-        {
-            if (characterToStealMoney != null)
-            {
-                if (transform.position == characterToStealMoney.transform.position)
-                {
-                    characterToStealMoney.money -= 5;
-                }
-            }
-        }
-
-    }
-
-    public void StealCooldown()
-    {
-        if (stealCooldown)
-        {
-            time += Time.deltaTime;
-            if ((int)time == 5)
-            {
-                stealCooldown = false;
-                time = 0;
-            }
-        }
-=======
         pickTimer += Time.deltaTime;
         stealTimer += Time.deltaTime;
         if (pickTimer > 60)
@@ -94,12 +48,12 @@ public class Thief : Character
     {
         var random = new System.Random();
         targetBuilding = availableBuildings[random.Next(availableBuildings.Length)];
+        movementEnabled=true;
         characterDestination = targetBuilding.buildingPosition;
 
     }
     public void StealMoney(Building building)
     {
         building.money -= stealAmount;
->>>>>>> fc32d43dfe05024726d41e696d07f780e5546a90
     }
 }
