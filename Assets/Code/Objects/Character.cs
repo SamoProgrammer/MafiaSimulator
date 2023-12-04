@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace MafiaSimulator.Code.Objects
 {
-    
+
 }
 public class Character : MonoBehaviour
 {
@@ -21,7 +21,7 @@ public class Character : MonoBehaviour
 
     protected virtual void Update()
     {
-        MoveCharacter();
+
         OnCharacterDeath();
     }
 

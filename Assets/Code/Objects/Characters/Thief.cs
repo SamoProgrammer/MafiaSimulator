@@ -2,89 +2,72 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-<<<<<<< HEAD
-using UnityEngine;
-
-
-public class Thief : Character
-{
-    private float time;
-    private bool stealCooldown = false;
-    public Character characterToStealMoney;
-=======
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Thief : Character
 {
 
     [SerializeField] int stealAmount = 2;
     [SerializeField] GameObject workplaces;
+    public ThiefStates thiefState = ThiefStates.GoingToStealMoney;
+    public GameObject prisonOutput;
+    public GameObject prison;
+    [SerializeField] float jailTime = 30;
     Building[] availableBuildings;
+    NavMeshAgent myAgent;
     float pickTimer = 0;
     float stealTimer = 0;
+    float jailTimer = 0;
     Building targetBuilding;
 
-    private void Start()
+    protected override void Start()
     {
-        availableBuildings = workplaces.GetComponentsInChildren<Building>();
+        myAgent = GetComponent<NavMeshAgent>();
+        availableBuildings = GetChildObjects(workplaces);
         PickTarget();
 
+
     }
->>>>>>> fc32d43dfe05024726d41e696d07f780e5546a90
 
     protected override void Update()
     {
-        base.Update();
-<<<<<<< HEAD
-        // simple timer mechanism
-        StealMoney();
-        StealCooldown();
-
-
-    }
-
-
-    public void StealMoney()
-    {
-        if (!stealCooldown)
+        if (thiefState != ThiefStates.CapturedByPolice && thiefState != ThiefStates.InPrison)
         {
-            if (characterToStealMoney != null)
+            pickTimer += Time.deltaTime;
+            stealTimer += Time.deltaTime;
+            if (pickTimer > 60)
             {
-                if (transform.position == characterToStealMoney.transform.position)
+                pickTimer = 0;
+                PickTarget();
+
+            }
+
+            if (Vector3.Distance(transform.position, targetBuilding.transform.position) < 1f)
+            {
+                if (stealTimer > 5)
                 {
-                    characterToStealMoney.money -= 5;
+                    stealTimer = 0;
+                    StealMoney(targetBuilding);
+                    Debug.Log($"{money} - {targetBuilding.money}");
                 }
             }
-        }
-
-    }
-
-    public void StealCooldown()
-    {
-        if (stealCooldown)
-        {
-            time += Time.deltaTime;
-            if ((int)time == 5)
+            else
             {
-                stealCooldown = false;
-                time = 0;
+                myAgent.SetDestination(targetBuilding.buildingPosition);
             }
         }
-=======
-        pickTimer += Time.deltaTime;
-        stealTimer += Time.deltaTime;
-        if (pickTimer > 60)
-        {
-            pickTimer = 0;
-            PickTarget();
 
-        }
-        if (this.transform.position == targetBuilding.transform.position)
+        if (thiefState == ThiefStates.InPrison)
         {
-            if (stealTimer > 5)
+            myAgent.SetDestination(prison.transform.position);
+            jailTimer += Time.deltaTime;
+            if (jailTimer == jailTime)
             {
-                StealMoney(targetBuilding);
+                transform.position = prisonOutput.transform.position;
+                thiefState = ThiefStates.GoingToStealMoney;
             }
         }
     }
@@ -95,11 +78,28 @@ public class Thief : Character
         var random = new System.Random();
         targetBuilding = availableBuildings[random.Next(availableBuildings.Length)];
         characterDestination = targetBuilding.buildingPosition;
+        thiefState = ThiefStates.GoingToStealMoney;
 
     }
     public void StealMoney(Building building)
     {
+        thiefState = ThiefStates.StealingMoney;
         building.money -= stealAmount;
->>>>>>> fc32d43dfe05024726d41e696d07f780e5546a90
+        money += stealAmount;
+    }
+
+    Building[] GetChildObjects(GameObject parent)
+    {
+        // GetComponentsInChildren also includes the parent itself, so we filter it out
+        Transform[] childTransforms = parent.GetComponentsInChildren<Transform>(true);
+
+        // Convert Transform array to GameObject array
+        Building[] childObjects = new Building[childTransforms.Length - 1];
+        for (int i = 1; i < childTransforms.Length; i++)
+        {
+            childObjects[i - 1] = childTransforms[i].gameObject.GetComponent<Building>();
+        }
+
+        return childObjects;
     }
 }
