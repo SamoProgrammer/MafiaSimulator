@@ -8,7 +8,7 @@ public class Worker : Character
     private float time;
     private List<House> housesToWork;
     private House houseToWork;
-    private WorkerStates workerState = WorkerStates.GoingToHouseForWork;
+    public WorkerStates workerState = WorkerStates.GoingToHouseForWork;
 
     protected override void Start()
     {

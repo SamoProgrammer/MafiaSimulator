@@ -47,23 +47,24 @@ public class UIScript : MonoBehaviour
                 break;
             case "Worker":
                 mainImage = workerImage;
-                characterState = character.GetComponent<Investor>().investorStates.ToString();
+                characterState = character.GetComponent<Worker>().workerState.ToString();
                 break;
             case "Miner":
                 mainImage = minerImage;
-                characterState = character.GetComponent<Investor>().investorStates.ToString();
+                characterState = character.GetComponent<Miner>().minerState.ToString();
                 break;
             case "Assassin":
                 mainImage = assassinImage;
-                characterState = character.GetComponent<Investor>().investorStates.ToString();
+                characterState = character.GetComponent<Assassin>().assasinState.ToString();
                 break;
             case "Doctor":
                 mainImage = doctorImage;
-                characterState = character.GetComponent<Investor>().investorStates.ToString();
+                characterState = character.GetComponent<Doctor>().doctorState.ToString();
                 break;
 
         }
 
+        stateText.text = characterState;
         citizenImage.texture = mainImage;
         roleText.text = tag;
         moneyText.text = character.money.ToString();

@@ -12,7 +12,7 @@ class Assassin : Character
 {
     List<GameObject> charactersOnSight = new List<GameObject>();
     NavMeshAgent myNavmeshAgent;
-    AssassinStates assasinState = AssassinStates.Idle;
+    public AssassinStates assasinState = AssassinStates.Idle;
     [SerializeField] int killCooldown;
     [SerializeField] GameObject citizens;
     GameObject[] citizensArray;
