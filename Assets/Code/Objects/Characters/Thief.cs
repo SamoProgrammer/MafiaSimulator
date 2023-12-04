@@ -78,6 +78,7 @@ public class Thief : Character
     {
         var random = new System.Random();
         targetBuilding = availableBuildings[random.Next(availableBuildings.Length)];
+        movementEnabled=true;
         characterDestination = targetBuilding.buildingPosition;
         thiefState = ThiefStates.GoingToStealMoney;
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
 
 
 public class Doctor : Character
@@ -22,9 +23,11 @@ public class Doctor : Character
         {
             Character characterToHeal = charactersToHeal.First();
             doctorState = DoctorStates.MovingToHeal;
-            characterDestination = characterToHeal.transform.position;
-
-            if (transform.position == characterToHeal.transform.position)
+            Vector3 characterPositionToHeal = characterToHeal.transform.position - new Vector3(-0.5f, 0, -0.5f);
+            characterDestination = characterPositionToHeal;
+            movementEnabled = true;
+            
+            if (Vector3.Distance(transform.position, characterPositionToHeal) < 1.5f)
             {
                 characterToHeal.health = 100;
             }

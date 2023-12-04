@@ -22,9 +22,9 @@ class Assassin : Character
     System.Random random;
     float killTimer;
 
-
     protected override void Start()
     {
+        base.Start();
         myNavmeshAgent = GetComponent<NavMeshAgent>();
         citizensArray = GetChildObjects(citizens);
         foreach (var citizen in citizensArray)

@@ -15,13 +15,14 @@ public class Character : MonoBehaviour
     public int health = 100;
     public int money = 0;
     private NavMeshAgent characterAgent;
-    public Vector3 characterDestination;
+    private Animator animator;
+    protected Vector3 characterDestination;
+    protected bool movementEnabled = false;
 
     protected virtual void Start()
     {
 
         characterAgent = GetComponent<NavMeshAgent>();
-
     }
 
     protected virtual void Update()
@@ -32,7 +33,15 @@ public class Character : MonoBehaviour
 
     public void MoveCharacter()
     {
-        characterAgent.SetDestination(characterDestination);
+        if (movementEnabled)
+        {
+            characterAgent.SetDestination(characterDestination);
+            animator.SetBool("isWalking",true);
+        }
+        else if (!movementEnabled)
+        {
+
+        }
     }
 
     public void OnCharacterDeath()
