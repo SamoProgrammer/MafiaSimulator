@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,6 +10,8 @@ namespace MafiaSimulator.Code.Objects
 }
 public class Character : MonoBehaviour
 {
+    [SerializeField] GameObject myCamera;
+    UIScript myUIScript;
     public int health = 100;
     public int money = 0;
     private NavMeshAgent characterAgent;
@@ -18,13 +21,13 @@ public class Character : MonoBehaviour
 
     protected virtual void Start()
     {
+        myUIScript = myCamera.GetComponent<UIScript>();
         characterAgent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
     }
 
     protected virtual void Update()
     {
-        MoveCharacter();
+
         OnCharacterDeath();
     }
 
@@ -48,5 +51,12 @@ public class Character : MonoBehaviour
             Doctor doctor = GameObject.FindGameObjectWithTag("Doctor").GetComponent<Doctor>();
             doctor.charactersToHeal.Add(this);
         }
+    }
+
+    private void OnMouseDown()
+    {
+        Debug.Log("kos");
+        myUIScript.SetUi(transform.tag, money);
+
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,66 +12,93 @@ class Assassin : Character
 {
     List<GameObject> charactersOnSight = new List<GameObject>();
     NavMeshAgent myNavmeshAgent;
+    AssassinStates assasinState = AssassinStates.Idle;
+    [SerializeField] int killCooldown;
+    [SerializeField] GameObject citizens;
+    GameObject[] citizensArray;
+    List<GameObject> people = new List<GameObject>();
+    Character victimScript;
+    GameObject victim;
+    System.Random random;
+    float killTimer;
 
     protected override void Start()
     {
         base.Start();
         myNavmeshAgent = GetComponent<NavMeshAgent>();
+        citizensArray = GetChildObjects(citizens);
+        foreach (var citizen in citizensArray)
+        {
+            if (citizen.tag == "Worker" || citizen.tag == "Miner" || citizen.tag == "Investor")
+            {
+                people.Add(citizen);
+            }
+        }
+        random = new System.Random();
+
     }
 
     protected override void Update()
     {
-        if (charactersOnSight.Count != 0)
+
+        if (assasinState == AssassinStates.Idle)
         {
-            myNavmeshAgent.SetDestination(charactersOnSight.First().transform.position);
+            killTimer += Time.deltaTime;
         }
-        else
+        if (killTimer == killCooldown)
         {
-            SearchingForVictim();
+
+            victim = people[random.Next(0, people.Count)];
+            victimScript = victim.GetComponent<Character>();
+            if (victimScript.health > 0 && assasinState == AssassinStates.Idle)
+            {
+                killTimer = 0;
+                assasinState = AssassinStates.Killing;
+
+            }
+
         }
-        if (ReachedVictim())
+        if (assasinState == AssassinStates.Killing)
         {
             KillCharacter();
         }
+
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.transform.tag == "Worker" || other.transform.tag == "Miner" || other.transform.tag == "Investor")
-        {
-            charactersOnSight.Add(other.gameObject);
-        }
-    }
 
-    private void OnCollisionExit(Collision other)
-    {
-        if (other.transform.tag == "Worker" || other.transform.tag == "Miner" || other.transform.tag == "Investor")
-        {
-            charactersOnSight.Remove(other.gameObject);
-        }
-    }
+
+
 
     public void KillCharacter()
     {
-        GameObject characterToKill = charactersOnSight.First();
-        Character character = characterToKill.GetComponent<Character>();
-        character.health = 0;
-        charactersOnSight.Remove(characterToKill);
 
-    }
-
-    public bool ReachedVictim()
-    {
-        if (transform.position == charactersOnSight.First().transform.position)
+        myNavmeshAgent.SetDestination(victim.transform.position);
+        if (Vector3.Distance(transform.position, victim.transform.position) < 1)
         {
-            return true;
+            victimScript.health = 0;
+            assasinState = AssassinStates.Idle;
         }
-        return false;
+
+
     }
 
-    public void SearchingForVictim()
-    {
 
+
+
+
+    GameObject[] GetChildObjects(GameObject parent)
+    {
+        // GetComponentsInChildren also includes the parent itself, so we filter it out
+        Transform[] childTransforms = parent.GetComponentsInChildren<Transform>(true);
+
+        // Convert Transform array to GameObject array
+        GameObject[] childObjects = new GameObject[childTransforms.Length - 1];
+        for (int i = 1; i < childTransforms.Length; i++)
+        {
+            childObjects[i - 1] = childTransforms[i].gameObject.GetComponent<GameObject>();
+        }
+
+        return childObjects;
     }
 }
 

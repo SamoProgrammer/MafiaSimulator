@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-enum ThiefStates
+public enum ThiefStates
 {
-    
+
     GoingToStealMoney,
     StealingMoney,
-    BeingCapturedByPolice,
+    CapturedByPolice,
     InPrison
 
 }
