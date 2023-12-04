@@ -6,7 +6,8 @@ using TMPro;
 
 public class UIScript : MonoBehaviour
 {
-    Texture2D mainImage;
+
+    [SerializeField] TextMeshProUGUI stateText;
     [SerializeField] Texture2D workerImage;
     [SerializeField] Texture2D minerImage;
     [SerializeField] Texture2D thiefImage;
@@ -21,40 +22,50 @@ public class UIScript : MonoBehaviour
 
 
 
-    public void SetUi(string tag, int money)
+    public void SetUi(Character character)
     {
-        switch (tag)
+        Texture2D mainImage = workerImage;
+        string characterState = "";
+        switch (character.tag)
         {
             case "Investor":
                 mainImage = investorImage;
+                characterState = character.GetComponent<Investor>().investorStates.ToString();
                 break;
             case "Thief":
                 mainImage = thiefImage;
+                characterState = character.GetComponent<Thief>().thiefState.ToString();
                 break;
             case "Bribe":
                 mainImage = bribeThiefImage;
                 tag = "Bribe Thief";
+                characterState = character.GetComponent<Thief>().thiefState.ToString();
                 break;
             case "Police":
                 mainImage = policeImage;
+                characterState = character.GetComponent<Police>().policeState.ToString();
                 break;
             case "Worker":
                 mainImage = workerImage;
+                characterState = character.GetComponent<Investor>().investorStates.ToString();
                 break;
             case "Miner":
                 mainImage = minerImage;
+                characterState = character.GetComponent<Investor>().investorStates.ToString();
                 break;
             case "Assassin":
                 mainImage = assassinImage;
+                characterState = character.GetComponent<Investor>().investorStates.ToString();
                 break;
             case "Doctor":
                 mainImage = doctorImage;
+                characterState = character.GetComponent<Investor>().investorStates.ToString();
                 break;
 
         }
 
         citizenImage.texture = mainImage;
         roleText.text = tag;
-        moneyText.text = money.ToString();
+        moneyText.text = character.money.ToString();
     }
 }

@@ -11,7 +11,7 @@ namespace MafiaSimulator.Code.Objects
 public class Character : MonoBehaviour
 {
     [SerializeField] GameObject myCamera;
-    UIScript myUIScript;
+
     public int health = 100;
     public int money = 0;
     private NavMeshAgent characterAgent;
@@ -19,7 +19,7 @@ public class Character : MonoBehaviour
 
     protected virtual void Start()
     {
-        myUIScript = myCamera.GetComponent<UIScript>();
+
         characterAgent = GetComponent<NavMeshAgent>();
 
     }
@@ -46,8 +46,8 @@ public class Character : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("kos");
-        myUIScript.SetUi(transform.tag, money);
+
+        myCamera.GetComponent<UIScript>().SetUi(this);
 
     }
 }
