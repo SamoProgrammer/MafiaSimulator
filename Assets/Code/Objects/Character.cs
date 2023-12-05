@@ -10,7 +10,7 @@ namespace MafiaSimulator.Code.Objects
 }
 public class Character : MonoBehaviour
 {
-    [SerializeField] GameObject myCamera;
+    private GameObject gameCamera;
 
     public int health = 100;
     public int money = 0;
@@ -23,11 +23,13 @@ public class Character : MonoBehaviour
     {
 
         characterAgent = GetComponent<NavMeshAgent>();
+        gameCamera = FindFirstObjectByType<Camera>().gameObject;
     }
 
     protected virtual void Update()
     {
 
+        MoveCharacter();
         OnCharacterDeath();
     }
 
@@ -36,12 +38,13 @@ public class Character : MonoBehaviour
         if (movementEnabled)
         {
             characterAgent.SetDestination(characterDestination);
-            animator.SetBool("isWalking",true);
+            // animator.SetBool("isWalking", true);
         }
-        else if (!movementEnabled)
-        {
+        // else if (!movementEnabled)
+        // {
+        //     animator.SetBool("isWalking", false);
 
-        }
+        // }
     }
 
     public void OnCharacterDeath()
@@ -50,13 +53,15 @@ public class Character : MonoBehaviour
         {
             Doctor doctor = GameObject.FindGameObjectWithTag("Doctor").GetComponent<Doctor>();
             doctor.charactersToHeal.Add(this);
+
+            transform.Rotate(0, 0, 90f);
         }
     }
 
     private void OnMouseDown()
     {
 
-        myCamera.GetComponent<UIScript>().SetUi(this);
+        gameCamera.GetComponent<UIScript>().SetUi(this);
 
     }
 }
