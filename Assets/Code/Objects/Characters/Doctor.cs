@@ -26,10 +26,11 @@ public class Doctor : Character
             Vector3 characterPositionToHeal = characterToHeal.transform.position - new Vector3(-0.5f, 0, -0.5f);
             characterDestination = characterPositionToHeal;
             movementEnabled = true;
-            
+
             if (Vector3.Distance(transform.position, characterPositionToHeal) < 1.5f)
             {
                 characterToHeal.health = 100;
+                characterToHeal.transform.Rotate(0, 0, -90f);
             }
             charactersToHeal.Remove(characterToHeal);
         }
