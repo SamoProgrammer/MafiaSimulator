@@ -2,5 +2,5 @@
 public enum MinerStates
 {
   
-    Mining
+    Mining,
 }
