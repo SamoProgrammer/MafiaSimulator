@@ -8,6 +8,7 @@ public class Miner : Character
 {
     private float time;
     public MinerStates minerState = MinerStates.Mining;
+    public Building mine;
 
     protected override void Update()
     {
@@ -19,12 +20,17 @@ public class Miner : Character
     {
         if (health == 100)
         {
-            time += Time.deltaTime;
-            if ((int)time == 7)
+            if (mine.money > 0)
             {
-                money += 10;
-                time = 0;
+                time += Time.deltaTime;
+                if ((int)time == 7)
+                {
+                    money += 10;
+                    mine.money -= 10;
+                    time = 0;
+                }
             }
+
         }
     }
 }
