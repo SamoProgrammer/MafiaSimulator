@@ -7318,6 +7318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   money: 0
+  workTime: 7
   minerState: 0
   mine: {fileID: 699721069}
 --- !u!1001 &200923335
@@ -22875,6 +22876,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   money: 0
+  workTime: 7
   minerState: 0
   mine: {fileID: 699721069}
 --- !u!1001 &662566611
@@ -24153,7 +24155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3b3164603d70d044aecd5d41e6e2adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  money: 0
+  money: 10000
   buildingPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &702201340
 PrefabInstance:
@@ -26933,6 +26935,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   money: 0
+  workTime: 20
   workplaces: {fileID: 2079944761}
   workerState: 0
 --- !u!1001 &770035173
@@ -27739,6 +27742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   money: 0
+  workTime: 20
   workplaces: {fileID: 2079944761}
   workerState: 0
 --- !u!1001 &797617783
@@ -39683,7 +39687,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1117900452}
   m_Layer: 0
-  m_Name: Prison
+  m_Name: PrisonBuilding
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44654,7 +44658,7 @@ GameObject:
   - component: {fileID: 1250342612}
   - component: {fileID: 1250342611}
   m_Layer: 0
-  m_Name: Input
+  m_Name: PrisonEnterDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46023,11 +46027,12 @@ MonoBehaviour:
   health: 100
   money: 0
   stealAmount: 5
-  workplaces: {fileID: 2079944761}
+  workplacesGameObject: {fileID: 2079944761}
   thiefState: 0
-  prisonOutput: {fileID: 1661522443}
-  prison: {fileID: 1321125374}
+  prisonOutputGameObject: {fileID: 1661522443}
+  prisonGameObject: {fileID: 1321125374}
   jailTime: 10
+  stealTime: 30
 --- !u!1001 &1279678452
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47743,7 +47748,7 @@ GameObject:
   - component: {fileID: 1321125377}
   - component: {fileID: 1321125376}
   m_Layer: 0
-  m_Name: Prison
+  m_Name: PrisonYard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52648,7 +52653,7 @@ MonoBehaviour:
   money: 0
   assasinState: 0
   killCooldown: 5
-  citizens: {fileID: 2107268861}
+  charactersGameObject: {fileID: 2107268861}
   prison: {fileID: 1321125374}
   prisonOutput: {fileID: 1661522443}
   jailTime: 50
@@ -53620,9 +53625,8 @@ MonoBehaviour:
   money: 0
   policeState: 0
   bribeCoolDown: 20
-  patrolWaypointsParent: {fileID: 1173040425}
-  prisonInput: {fileID: 1250342609}
-  prison: {fileID: 1321125374}
+  patrolWaypointsGameObject: {fileID: 1173040425}
+  prisonInputGameObject: {fileID: 1250342609}
   bribeAmount: 30
 --- !u!4 &1480229308 stripped
 Transform:
@@ -59326,7 +59330,7 @@ GameObject:
   - component: {fileID: 1661522446}
   - component: {fileID: 1661522445}
   m_Layer: 0
-  m_Name: Output
+  m_Name: PrisonExitDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71848,11 +71852,12 @@ MonoBehaviour:
   health: 100
   money: 0
   stealAmount: 5
-  workplaces: {fileID: 2079944761}
+  workplacesGameObject: {fileID: 2079944761}
   thiefState: 0
-  prisonOutput: {fileID: 1661522443}
-  prison: {fileID: 1321125374}
+  prisonOutputGameObject: {fileID: 1661522443}
+  prisonGameObject: {fileID: 1321125374}
   jailTime: 30
+  stealTime: 30
 --- !u!1001 &2001883220
 PrefabInstance:
   m_ObjectHideFlags: 0
