@@ -3,6 +3,7 @@ using UnityEngine;
 public class Miner : Character
 {
     private float workTimer;
+    [SerializeField] float workTime = 7;
     public MinerStates minerState = MinerStates.Mining;
     public Building mine;
 
@@ -16,7 +17,7 @@ public class Miner : Character
         if (mine.money > 0)
         {
             workTimer += Time.deltaTime;
-            if (workTimer > 7)
+            if (workTimer > workTime)
             {
                 money += 10;
                 mine.money -= 10;

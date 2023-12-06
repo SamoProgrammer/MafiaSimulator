@@ -66,7 +66,7 @@ public class UIScript : MonoBehaviour
 
         stateText.text = characterState;
         citizenImage.texture = mainImage;
-        roleText.text = tag;
+        roleText.text = character.tag;
         moneyText.text = character.money.ToString();
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class Investor : Character
 {
     private float workTimer;
+    [SerializeField] float workTime = 10;
     public InvestorStates investorStates = InvestorStates.Investing;
 
 
@@ -18,7 +19,7 @@ public class Investor : Character
     private void Invest()
     {
         workTimer += Time.deltaTime;
-        if (workTimer > 10)
+        if (workTimer > workTime)
         {
             this.money += this.money * 5 / 100;
             workTimer = 0;

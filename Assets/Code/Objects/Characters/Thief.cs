@@ -1,67 +1,61 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Thief : Character
 {
-    [SerializeField] int stealAmount = 2;
-    [SerializeField] GameObject workplaces;
+    [SerializeField] int stealAmount = 10;
+    [SerializeField] GameObject workplacesGameObject;
     public ThiefStates thiefState = ThiefStates.GoingToStealMoney;
-    public GameObject prisonOutput;
-    public GameObject prison;
+    [SerializeField] GameObject prisonOutputGameObject;
+    [SerializeField] GameObject prisonGameObject;
     [SerializeField] int jailTime = 30;
-    Building[] availableBuildings;
-    NavMeshAgent myAgent;
-    float pickTimer = 0;
-    float stealTimer = 0;
     float jailTimer = 0;
-    Building targetBuilding;
+    List<Building> availableBuildings;
+    float stealTimer = 0;
+    [SerializeField] float stealTime = 30;
+    private Building targetBuilding;
+    private bool hasAHouseToSteal = false;
 
     protected override void Start()
     {
-
-        myAgent = GetComponent<NavMeshAgent>();
-        availableBuildings = GetChildObjects(workplaces);
+        base.Start();
+        availableBuildings = workplacesGameObject.GetComponentsInChildren<Building>().ToList();
         PickTarget();
 
 
     }
 
-    protected override void Update()
+    protected override void PerformUpdate()
     {
         if (thiefState != ThiefStates.CapturedByPolice && thiefState != ThiefStates.InPrison)
         {
-            pickTimer += Time.deltaTime;
             stealTimer += Time.deltaTime;
-            if (pickTimer > 60)
+            if (hasAHouseToSteal)
             {
-                pickTimer = 0;
-                PickTarget();
-
-            }
-
-            if (Vector3.Distance(transform.position, targetBuilding.transform.position) < 1f)
-            {
-                if (stealTimer > 5)
+                if (stealTimer < stealTime)
                 {
                     stealTimer = 0;
                     StealMoney(targetBuilding);
-                    Debug.Log($"{money} - {targetBuilding.money}");
                 }
+
             }
             else
             {
-                myAgent.SetDestination(targetBuilding.buildingPosition);
+                PickTarget();
+                hasAHouseToSteal = true;
             }
+
         }
 
         if (thiefState == ThiefStates.InPrison)
         {
-            myAgent.SetDestination(prison.transform.position);
+            characterDestination = prisonGameObject.transform.position;
             jailTimer += Time.deltaTime;
-            transform.position = prison.transform.position;
-            if ((int)jailTimer == jailTime)
+            transform.position = prisonGameObject.transform.position;
+            if (jailTimer > jailTime)
             {
-                transform.position = prisonOutput.transform.position;
+                transform.position = prisonOutputGameObject.transform.position;
                 thiefState = ThiefStates.GoingToStealMoney;
             }
         }
@@ -70,31 +64,25 @@ public class Thief : Character
 
     void PickTarget()
     {
-        var random = new System.Random();
-        targetBuilding = availableBuildings[random.Next(availableBuildings.Length)];
+        targetBuilding = availableBuildings[Random.Range(0, availableBuildings.Count)];
         characterDestination = targetBuilding.buildingPosition;
         thiefState = ThiefStates.GoingToStealMoney;
 
     }
+
     public void StealMoney(Building building)
     {
-        thiefState = ThiefStates.StealingMoney;
-        building.money -= stealAmount;
-        money += stealAmount;
-    }
-
-    Building[] GetChildObjects(GameObject parent)
-    {
-        // GetComponentsInChildren also includes the parent itself, so we filter it out
-        Transform[] childTransforms = parent.GetComponentsInChildren<Transform>(true);
-
-        // Convert Transform array to GameObject array
-        Building[] childObjects = new Building[childTransforms.Length - 1];
-        for (int i = 1; i < childTransforms.Length; i++)
+        characterDestination = targetBuilding.buildingPosition;
+        movementEnabled = true;
+        if (Vector3.Distance(transform.position, targetBuilding.transform.position) < 1f)
         {
-            childObjects[i - 1] = childTransforms[i].gameObject.GetComponent<Building>();
-        }
+            thiefState = ThiefStates.StealingMoney;
+            building.money -= stealAmount;
+            money += stealAmount;
+            hasAHouseToSteal = false;
+            movementEnabled = false;
 
-        return childObjects;
+        }
     }
+
 }

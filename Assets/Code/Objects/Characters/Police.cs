@@ -2,16 +2,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Police : Character
 {
     public PoliceStates policeState = PoliceStates.Patroling;
     [SerializeField] int bribeCoolDown;
-    [SerializeField] GameObject patrolWaypointsParent;
-    [SerializeField] GameObject prisonInput;
-    float bribeTimer = 0;
-    public int bribeAmount = 50;
+    float bribeCooldownTimer = 0;
+    [SerializeField] GameObject patrolWaypointsGameObject;
+    [SerializeField] GameObject prisonInputGameObject;
+    [SerializeField] int bribeAmount = 50;
     GameObject suspect;
     Thief thiefScript;
     Assassin assassinScript;
@@ -24,14 +23,14 @@ public class Police : Character
     {
 
         base.Start();
-        patrolWaypoints = patrolWaypointsParent.GetComponentsInChildren<Transform>().ToList();
+        patrolWaypoints = patrolWaypointsGameObject.GetComponentsInChildren<Transform>().ToList();
 
     }
 
 
     protected override void PerformUpdate()
     {
-        bribeTimer += Time.deltaTime;
+        bribeCooldownTimer += Time.deltaTime;
         if (policeState == PoliceStates.Patroling)
         {
             Patrol();
@@ -68,11 +67,11 @@ public class Police : Character
                 thiefScript = other.GetComponent<Thief>();
                 if (thiefScript.tag == "Bribe" && thiefScript.money > bribeAmount)
                 {
-                    if (bribeTimer > bribeCoolDown)
+                    if (bribeCooldownTimer > bribeCoolDown)
                     {
                         money += bribeAmount;
                         thiefScript.money -= bribeAmount;
-                        bribeTimer = 0;
+                        bribeCooldownTimer = 0;
                     }
                     else
                     {
@@ -128,8 +127,8 @@ public class Police : Character
     void Arrest()
     {
         suspect.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1f);
-        characterAgent.SetDestination(prisonInput.transform.position);
-        if (Vector3.Distance(transform.position, prisonInput.transform.position) < 1f)
+        characterAgent.SetDestination(prisonInputGameObject.transform.position);
+        if (Vector3.Distance(transform.position, prisonInputGameObject.transform.position) < 1f)
         {
             if (suspect.tag == "Assassin")
             {
@@ -157,19 +156,4 @@ public class Police : Character
             }
         }
     }
-
-    // GameObject[] GetChildObjects(GameObject parent)
-    // {
-    //     // GetComponentsInChildren also includes the parent itself, so we filter it out
-    //     Transform[] childTransforms = parent.GetComponentsInChildren<Transform>(true);
-
-    //     // Convert Transform array to GameObject array
-    //     GameObject[] childObjects = new GameObject[childTransforms.Length - 1];
-    //     for (int i = 1; i < childTransforms.Length; i++)
-    //     {
-    //         childObjects[i - 1] = childTransforms[i].gameObject;
-    //     }
-
-    //     return childObjects;
-    // }
 }

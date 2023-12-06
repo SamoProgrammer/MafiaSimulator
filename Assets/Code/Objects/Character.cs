@@ -14,13 +14,14 @@ public class Character : MonoBehaviour
     public int money = 0;
     protected NavMeshAgent characterAgent;
     protected Vector3 characterDestination;
+    protected bool movementEnabled;
 
     protected virtual void Start()
     {
 
         characterAgent = GetComponent<NavMeshAgent>();
         gameCamera = FindFirstObjectByType<Camera>().gameObject;
-        StartCoroutine(UpdateDestination());
+        InvokeRepeating("UpdateDestination", 1f, 1f);
     }
 
     protected virtual void Update()
@@ -33,32 +34,38 @@ public class Character : MonoBehaviour
 
     }
 
-    // handle updates in this method instead of Update method beacause of being able to exit method if health is zero
+
     protected virtual void PerformUpdate()
     {
 
     }
 
-    // update character position every 0.7 sec because it doesnt support game object
-    private IEnumerator UpdateDestination()
+
+    private void UpdateDestination()
     {
-        while (characterDestination != null)
+        if (movementEnabled)
         {
             characterAgent.SetDestination(characterDestination);
-            yield return new WaitForSeconds(0.7f);
         }
     }
 
     [ContextMenu("DeathMethod")]
     public void OnCharacterDeath()
     {
-        if (health == 0)
+        if (characterAgent.isActiveAndEnabled)
         {
-            Doctor doctor = GameObject.FindGameObjectWithTag("Doctor").GetComponent<Doctor>();
-            doctor.charactersToHeal.Add(this);
+            characterAgent.isStopped = true;
+            characterAgent.enabled = false;
+            CancelInvoke("UpdateDestination");
 
+            Doctor doctor = GameObject.FindGameObjectWithTag("Doctor").GetComponent<Doctor>();
+            if (doctor && !doctor.charactersToHeal.Contains(this))
+            {
+                doctor.charactersToHeal.Add(this);
+            }
             transform.Rotate(0, 0, 90f);
         }
+
     }
 
     private void OnMouseDown()
@@ -66,5 +73,17 @@ public class Character : MonoBehaviour
 
         gameCamera.GetComponent<UIScript>().SetUi(this);
 
+    }
+
+    public void ReviveCharacter()
+    {
+        health = 100;
+        characterAgent.enabled = true;
+        characterAgent.isStopped = false;
+
+        InvokeRepeating("UpdateDestination", 1f, 1f);
+
+        transform.rotation = Quaternion.identity;
+        PerformUpdate();
     }
 }
