@@ -9,6 +9,10 @@ TagManager:
   - Thief
   - Bribe
   - Police
+  - Doctor
+  - Assassin
+  - Worker
+  - Miner
   layers:
   - Default
   - TransparentFX
