@@ -1,37 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TMPro;
 using UnityEngine;
 
 
 public class Investor : Character
 {
-    private float time;
+    private float workTimer;
     public InvestorStates investorStates = InvestorStates.Investing;
 
 
-    protected override void Update()
+    protected override void PerformUpdate()
     {
-        base.Update();
-        // simple timer mechanism
+        // simple workTimer mechanism
         Invest();
     }
 
 
-    // adding 5 percent to character money in every 5 seconds
+    // adding 5 percent to character money in every 10 seconds
     private void Invest()
     {
-        if (health == 100)
+        workTimer += Time.deltaTime;
+        if (workTimer > 10)
         {
-            time += Time.deltaTime;
-            if ((int)time == 5)
-            {
-                this.money += this.money * 5 / 100;
-                Debug.Log(this.money);
-                time = 0;
-            }
+            this.money += this.money * 5 / 100;
+            workTimer = 0;
         }
     }
 

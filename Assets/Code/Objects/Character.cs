@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,39 +12,44 @@ public class Character : MonoBehaviour
 
     public int health = 100;
     public int money = 0;
-    private NavMeshAgent characterAgent;
-    private Animator animator;
+    protected NavMeshAgent characterAgent;
     protected Vector3 characterDestination;
-    protected bool movementEnabled = false;
 
     protected virtual void Start()
     {
 
         characterAgent = GetComponent<NavMeshAgent>();
         gameCamera = FindFirstObjectByType<Camera>().gameObject;
+        StartCoroutine(UpdateDestination());
     }
 
     protected virtual void Update()
     {
+        if (health == 0)
+        {
+            return;
+        }
+        PerformUpdate();
 
-        MoveCharacter();
-        OnCharacterDeath();
     }
 
-    public void MoveCharacter()
+    // handle updates in this method instead of Update method beacause of being able to exit method if health is zero
+    protected virtual void PerformUpdate()
     {
-        if (movementEnabled)
+
+    }
+
+    // update character position every 0.7 sec because it doesnt support game object
+    private IEnumerator UpdateDestination()
+    {
+        while (characterDestination != null)
         {
             characterAgent.SetDestination(characterDestination);
-            // animator.SetBool("isWalking", true);
+            yield return new WaitForSeconds(0.7f);
         }
-        // else if (!movementEnabled)
-        // {
-        //     animator.SetBool("isWalking", false);
-
-        // }
     }
 
+    [ContextMenu("DeathMethod")]
     public void OnCharacterDeath()
     {
         if (health == 0)

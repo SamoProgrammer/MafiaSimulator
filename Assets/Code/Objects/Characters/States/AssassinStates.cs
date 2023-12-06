@@ -5,5 +5,7 @@ using UnityEngine;
 public enum AssassinStates
 {
     Idle,
-    Killing
+    Killing,
+    Arrested,
+    InPrison
 }

@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -78,7 +72,6 @@ public class Thief : Character
     {
         var random = new System.Random();
         targetBuilding = availableBuildings[random.Next(availableBuildings.Length)];
-        movementEnabled = true;
         characterDestination = targetBuilding.buildingPosition;
         thiefState = ThiefStates.GoingToStealMoney;
 

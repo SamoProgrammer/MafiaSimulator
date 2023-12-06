@@ -10,8 +10,6 @@ using UnityEngine.AI;
 
 class Assassin : Character
 {
-    List<GameObject> charactersOnSight = new List<GameObject>();
-    NavMeshAgent myNavmeshAgent;
     public AssassinStates assasinState = AssassinStates.Idle;
     [SerializeField] int killCooldown;
     [SerializeField] GameObject citizens;
@@ -20,13 +18,17 @@ class Assassin : Character
     Character victimScript;
     GameObject victim;
     System.Random random;
+    [SerializeField] GameObject prison;
+    [SerializeField] GameObject prisonOutput;
+    float jailTimer;
+    [SerializeField] float jailTime;
     float killTimer;
 
     protected override void Start()
     {
         base.Start();
-        myNavmeshAgent = GetComponent<NavMeshAgent>();
         citizensArray = GetChildObjects(citizens);
+        killTimer = killCooldown;
         foreach (var citizen in citizensArray)
         {
             if (citizen.tag == "Worker" || citizen.tag == "Miner" || citizen.tag == "Investor")
@@ -34,13 +36,13 @@ class Assassin : Character
                 people.Add(citizen);
             }
         }
+        Debug.Log(people.Count);
         random = new System.Random();
 
     }
 
-    protected override void Update()
+    protected override void PerformUpdate()
     {
-
         if (assasinState == AssassinStates.Idle)
         {
             killTimer += Time.deltaTime;
@@ -62,6 +64,17 @@ class Assassin : Character
         {
             KillCharacter();
         }
+        if (assasinState == AssassinStates.InPrison)
+        {
+            characterDestination = prison.transform.position;
+            jailTimer += Time.deltaTime;
+            transform.position = prison.transform.position;
+            if ((int)jailTimer == jailTime)
+            {
+                transform.position = prisonOutput.transform.position;
+                assasinState = AssassinStates.Idle;
+            }
+        }
 
     }
 
@@ -72,7 +85,7 @@ class Assassin : Character
     public void KillCharacter()
     {
 
-        myNavmeshAgent.SetDestination(victim.transform.position);
+        characterDestination = victim.transform.position;
         if (Vector3.Distance(transform.position, victim.transform.position) < 1)
         {
             victimScript.health = 0;
