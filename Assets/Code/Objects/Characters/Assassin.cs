@@ -12,8 +12,8 @@ public class Assassin : Character
     List<Character> characters;
     List<Character> killableCharacters = new List<Character>();
     Character victim;
-    [SerializeField] GameObject prison;
-    [SerializeField] GameObject prisonOutput;
+    [SerializeField] GameObject prisonEnter;
+    [SerializeField] GameObject prisonExit;
     float jailTimer;
     [SerializeField] float jailTime;
 
@@ -40,19 +40,29 @@ public class Assassin : Character
         {
             case AssassinStates.Idle:
                 killTimer += Time.deltaTime;
+                if (killTimer > killCooldown)
+                {
+                    victim = killableCharacters[Random.Range(0, killableCharacters.Count)];
+                    if (assasinState == AssassinStates.Idle)
+                    {
+                        killTimer = 0;
+                        assasinState = AssassinStates.Killing;
+
+                    }
+                }
                 break;
             case AssassinStates.Killing:
                 KillCharacter();
                 break;
             case AssassinStates.Arrested:
-                characterDestination = prison.transform.position;
+                characterDestination = prisonEnter.transform.position;
                 break;
             case AssassinStates.InPrison:
                 jailTimer += Time.deltaTime;
-                transform.position = prison.transform.position;
+                transform.position = prisonEnter.transform.position;
                 if (jailTimer > jailTime)
                 {
-                    transform.position = prisonOutput.transform.position;
+                    transform.position = prisonExit.transform.position;
                     assasinState = AssassinStates.Idle;
                 }
                 break;
@@ -60,16 +70,7 @@ public class Assassin : Character
                 break;
         }
 
-        if (killTimer > killCooldown)
-        {
-            victim = killableCharacters[Random.Range(0, killableCharacters.Count)];
-            if (assasinState == AssassinStates.Idle)
-            {
-                killTimer = 0;
-                assasinState = AssassinStates.Killing;
 
-            }
-        }
 
 
     }

@@ -50,12 +50,12 @@ public class Police : Character
 
         if (policeState == PoliceStates.Chasing)
         {
-            if (other.tag == assassinScript.tag)
+            if (other.tag == "Assassin")
             {
                 assassinScript.assasinState = AssassinStates.Arrested;
                 policeState = PoliceStates.EscortingSuspectToPrison;
             }
-            else if (other.tag == thiefScript.tag)
+            else if (other.tag == "Thief" || other.tag == "Bribe")
             {
                 thiefScript.thiefState = ThiefStates.CapturedByPolice;
                 policeState = PoliceStates.EscortingSuspectToPrison;
@@ -63,16 +63,17 @@ public class Police : Character
         }
         else if (policeState == PoliceStates.EscortingSuspectToPrison && other.tag == "Prison")
         {
-
-            if (suspect.tag == assassinScript.tag)
+            Debug.Log("Prison Collided!");
+            if (suspect.tag == "Assassin")
             {
                 assassinScript.assasinState = AssassinStates.InPrison;
             }
-            else if (suspect.tag == thiefScript.tag)
+            else if (suspect.tag == "Thief" || suspect.tag == "Bribe")
             {
                 thiefScript.thiefState = ThiefStates.InPrison;
             }
             policeState = PoliceStates.Patroling;
+
         }
     }
 
@@ -89,6 +90,7 @@ public class Police : Character
     {
         suspect.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1f);
         characterDestination = prisonInputGameObject.transform.position;
+
     }
 
     void Patrol()

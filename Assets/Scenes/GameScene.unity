@@ -46049,7 +46049,7 @@ MonoBehaviour:
   prisonExitGameObject: {fileID: 1661522443}
   prisonEnterGameObject: {fileID: 1250342609}
   prisonGameObject: {fileID: 1321125374}
-  jailTime: 10
+  jailTime: 30
   stealTime: 30
 --- !u!1001 &1279678452
 PrefabInstance:
@@ -52672,8 +52672,8 @@ MonoBehaviour:
   assasinState: 0
   killCooldown: 5
   charactersGameObject: {fileID: 2107268861}
-  prison: {fileID: 1321125374}
-  prisonOutput: {fileID: 1661522443}
+  prisonEnter: {fileID: 1250342609}
+  prisonExit: {fileID: 1661522443}
   jailTime: 50
 --- !u!1001 &1455040879
 PrefabInstance:

@@ -12,7 +12,6 @@ public class PolicePOV : MonoBehaviour
     {
         if (other.tag == "Thief" || other.tag == "Bribe" || other.tag == "Assassin")
         {
-            Debug.Log(other.name);
             if (other.tag == "Assassin")
             {
 
@@ -52,7 +51,7 @@ public class PolicePOV : MonoBehaviour
                 }
                 else
                 {
-                    if (police.thiefScript.thiefState == ThiefStates.StealingMoney || police.thiefScript.thiefState == ThiefStates.GoingToStealMoney || police.assassinScript.assasinState == AssassinStates.Killing)
+                    if (police.thiefScript.thiefState == ThiefStates.StealingMoney || police.thiefScript.thiefState == ThiefStates.GoingToStealMoney)
                     {
                         if (police.policeState == PoliceStates.Patroling)
                         {
@@ -62,7 +61,7 @@ public class PolicePOV : MonoBehaviour
                     }
                 }
             }
-
+            Debug.Log(police.suspect.name);
 
         }
     }
