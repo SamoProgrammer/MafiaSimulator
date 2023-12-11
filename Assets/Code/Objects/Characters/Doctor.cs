@@ -22,16 +22,13 @@ public class Doctor : Character
             doctorState = DoctorStates.MovingToHeal;
             Vector3 characterPositionToHeal = characterToHeal.transform.position - new Vector3(-0.5f, 0, -0.5f);
             characterDestination = characterPositionToHeal;
-            movementEnabled=true;
             if (Vector3.Distance(transform.position, characterPositionToHeal) < 1.5f)
             {
-                ReviveCharacter();
+                characterToHeal.ReviveCharacter();
             }
             charactersToHeal.Remove(characterToHeal);
-        }
-        else
-        {
             doctorState = DoctorStates.Idle;
         }
+
     }
 }

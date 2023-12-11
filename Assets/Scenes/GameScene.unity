@@ -10561,6 +10561,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4999496750207584, guid: d444fae48f5c24ef194f74bf52a925f6, type: 3}
   m_PrefabInstance: {fileID: 285618101}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &286701605 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8666036888757005913, guid: c0b85314f5e20b84da5f80fafd195a91, type: 3}
+  m_PrefabInstance: {fileID: 1480229300}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &286701608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 286701605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 199763a20e6f5204c9e7083a86609c02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &290376828
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44659,7 +44676,7 @@ GameObject:
   - component: {fileID: 1250342611}
   m_Layer: 0
   m_Name: PrisonEnterDoor
-  m_TagString: Untagged
+  m_TagString: Prison
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46029,7 +46046,8 @@ MonoBehaviour:
   stealAmount: 5
   workplacesGameObject: {fileID: 2079944761}
   thiefState: 0
-  prisonOutputGameObject: {fileID: 1661522443}
+  prisonExitGameObject: {fileID: 1661522443}
+  prisonEnterGameObject: {fileID: 1250342609}
   prisonGameObject: {fileID: 1321125374}
   jailTime: 10
   stealTime: 30
@@ -53577,6 +53595,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2213729385118834386, guid: c0b85314f5e20b84da5f80fafd195a91, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2561375955758867111, guid: c0b85314f5e20b84da5f80fafd195a91, type: 3}
       propertyPath: m_Speed
       value: 5
@@ -53593,67 +53615,27 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Police
       objectReference: {fileID: 0}
+    - target: {fileID: 8985131095097613520, guid: c0b85314f5e20b84da5f80fafd195a91, type: 3}
+      propertyPath: prisonInputGameObject
+      value: 
+      objectReference: {fileID: 1250342609}
+    - target: {fileID: 8985131095097613520, guid: c0b85314f5e20b84da5f80fafd195a91, type: 3}
+      propertyPath: patrolWaypointsGameObject
+      value: 
+      objectReference: {fileID: 1173040425}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4743644440877595083, guid: c0b85314f5e20b84da5f80fafd195a91, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 8666036888757005913, guid: c0b85314f5e20b84da5f80fafd195a91, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1480229309}
-    - targetCorrespondingSourceObject: {fileID: 4743644440877595083, guid: c0b85314f5e20b84da5f80fafd195a91, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1480229302}
+      addedObject: {fileID: 286701608}
   m_SourcePrefab: {fileID: 100100000, guid: c0b85314f5e20b84da5f80fafd195a91, type: 3}
---- !u!1 &1480229301 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4743644440877595083, guid: c0b85314f5e20b84da5f80fafd195a91, type: 3}
-  m_PrefabInstance: {fileID: 1480229300}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1480229302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1480229301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3c270b65b2db884cb3a24997dac0716, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 100
-  money: 0
-  policeState: 0
-  bribeCoolDown: 20
-  patrolWaypointsGameObject: {fileID: 1173040425}
-  prisonInputGameObject: {fileID: 1250342609}
-  bribeAmount: 30
 --- !u!4 &1480229308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1849889916992500105, guid: c0b85314f5e20b84da5f80fafd195a91, type: 3}
   m_PrefabInstance: {fileID: 1480229300}
   m_PrefabAsset: {fileID: 0}
---- !u!135 &1480229309
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1480229301}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 15
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1482536355
 GameObject:
   m_ObjectHideFlags: 0
@@ -71854,7 +71836,8 @@ MonoBehaviour:
   stealAmount: 5
   workplacesGameObject: {fileID: 2079944761}
   thiefState: 0
-  prisonOutputGameObject: {fileID: 1661522443}
+  prisonExitGameObject: {fileID: 1661522443}
+  prisonEnterGameObject: {fileID: 1250342609}
   prisonGameObject: {fileID: 1321125374}
   jailTime: 30
   stealTime: 30

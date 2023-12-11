@@ -7,7 +7,8 @@ public class Thief : Character
     [SerializeField] int stealAmount = 10;
     [SerializeField] GameObject workplacesGameObject;
     public ThiefStates thiefState = ThiefStates.GoingToStealMoney;
-    [SerializeField] GameObject prisonOutputGameObject;
+    [SerializeField] GameObject prisonExitGameObject;
+    [SerializeField] GameObject prisonEnterGameObject;
     [SerializeField] GameObject prisonGameObject;
     [SerializeField] int jailTime = 30;
     float jailTimer = 0;
@@ -48,14 +49,18 @@ public class Thief : Character
 
         }
 
+        if (thiefState == ThiefStates.CapturedByPolice)
+        {
+            characterDestination = prisonEnterGameObject.transform.position;
+        }
+
         if (thiefState == ThiefStates.InPrison)
         {
-            characterDestination = prisonGameObject.transform.position;
-            jailTimer += Time.deltaTime;
             transform.position = prisonGameObject.transform.position;
+            jailTimer += Time.deltaTime;
             if (jailTimer > jailTime)
             {
-                transform.position = prisonOutputGameObject.transform.position;
+                transform.position = prisonExitGameObject.transform.position;
                 thiefState = ThiefStates.GoingToStealMoney;
             }
         }
@@ -73,14 +78,12 @@ public class Thief : Character
     public void StealMoney(Building building)
     {
         characterDestination = targetBuilding.buildingPosition;
-        movementEnabled = true;
         if (Vector3.Distance(transform.position, targetBuilding.transform.position) < 1f)
         {
             thiefState = ThiefStates.StealingMoney;
             building.money -= stealAmount;
             money += stealAmount;
             hasAHouseToSteal = false;
-            movementEnabled = false;
 
         }
     }

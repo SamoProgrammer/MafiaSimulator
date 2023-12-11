@@ -35,7 +35,6 @@ public class Worker : Character
                 workTimer = 0;
                 money += 20;
                 hasAHouseToWork = false;
-                movementEnabled = false;
                 workerState = WorkerStates.GoingToHouseForWork;
             }
         }
@@ -45,8 +44,6 @@ public class Worker : Character
             {
                 Vector3 housePositionToWork = houseToWork.transform.position - new Vector3(-0.5f, 0, -0.5f);
                 characterDestination = housePositionToWork;
-                movementEnabled = true;
-                Debug.Log(characterDestination);
                 if (Vector3.Distance(transform.position, housePositionToWork) < 1.5f)
                 {
                     workerState = WorkerStates.Working;

@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 
-class Assassin : Character
+public class Assassin : Character
 {
     public AssassinStates assasinState = AssassinStates.Idle;
     [SerializeField] int killCooldown;
@@ -35,10 +35,31 @@ class Assassin : Character
     protected override void PerformUpdate()
     {
         // assassin will not start killing after game started immediately
-        if (assasinState == AssassinStates.Idle)
+
+        switch (assasinState)
         {
-            killTimer += Time.deltaTime;
+            case AssassinStates.Idle:
+                killTimer += Time.deltaTime;
+                break;
+            case AssassinStates.Killing:
+                KillCharacter();
+                break;
+            case AssassinStates.Arrested:
+                characterDestination = prison.transform.position;
+                break;
+            case AssassinStates.InPrison:
+                jailTimer += Time.deltaTime;
+                transform.position = prison.transform.position;
+                if (jailTimer > jailTime)
+                {
+                    transform.position = prisonOutput.transform.position;
+                    assasinState = AssassinStates.Idle;
+                }
+                break;
+            default:
+                break;
         }
+
         if (killTimer > killCooldown)
         {
             victim = killableCharacters[Random.Range(0, killableCharacters.Count)];
@@ -49,21 +70,7 @@ class Assassin : Character
 
             }
         }
-        if (assasinState == AssassinStates.Killing)
-        {
-            KillCharacter();
-        }
-        if (assasinState == AssassinStates.InPrison)
-        {
-            characterDestination = prison.transform.position;
-            jailTimer += Time.deltaTime;
-            transform.position = prison.transform.position;
-            if (jailTimer > jailTime)
-            {
-                transform.position = prisonOutput.transform.position;
-                assasinState = AssassinStates.Idle;
-            }
-        }
+
 
     }
 
@@ -71,18 +78,16 @@ class Assassin : Character
     {
 
         characterDestination = victim.transform.position;
-        movementEnabled = true;
         if (Vector3.Distance(transform.position, victim.transform.position) < 1f)
         {
             victim.health = 0;
             victim.transform.Rotate(0, 0, -90f);
             victim.OnCharacterDeath();
             assasinState = AssassinStates.Idle;
-            movementEnabled = false;
         }
 
-
     }
+
 
 }
 

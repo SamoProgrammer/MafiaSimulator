@@ -14,7 +14,6 @@ public class Character : MonoBehaviour
     public int money = 0;
     protected NavMeshAgent characterAgent;
     protected Vector3 characterDestination;
-    protected bool movementEnabled;
 
     protected virtual void Start()
     {
@@ -22,6 +21,7 @@ public class Character : MonoBehaviour
         characterAgent = GetComponent<NavMeshAgent>();
         gameCamera = FindFirstObjectByType<Camera>().gameObject;
         InvokeRepeating("UpdateDestination", 1f, 1f);
+        characterDestination = transform.position;
     }
 
     protected virtual void Update()
@@ -43,10 +43,7 @@ public class Character : MonoBehaviour
 
     private void UpdateDestination()
     {
-        if (movementEnabled)
-        {
-            characterAgent.SetDestination(characterDestination);
-        }
+        characterAgent.SetDestination(characterDestination);
     }
 
     [ContextMenu("DeathMethod")]
@@ -63,7 +60,7 @@ public class Character : MonoBehaviour
             {
                 doctor.charactersToHeal.Add(this);
             }
-            transform.Rotate(0, 0, 90f);
+            transform.Rotate(0, 0, -90f);
         }
 
     }
@@ -84,6 +81,6 @@ public class Character : MonoBehaviour
         InvokeRepeating("UpdateDestination", 1f, 1f);
 
         transform.rotation = Quaternion.identity;
-        PerformUpdate();
+        // PerformUpdate();
     }
 }
